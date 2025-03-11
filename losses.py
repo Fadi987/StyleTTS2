@@ -158,8 +158,8 @@ class GeneratorLoss(torch.nn.Module):
         y_ds_hat_r, y_ds_hat_g, fmap_s_r, fmap_s_g = self.msd(y, y_hat)
         loss_fm_f = feature_loss(fmap_f_r, fmap_f_g)
         loss_fm_s = feature_loss(fmap_s_r, fmap_s_g)
-        loss_gen_f, losses_gen_f = generator_loss(y_df_hat_g)
-        loss_gen_s, losses_gen_s = generator_loss(y_ds_hat_g)
+        loss_gen_f, _ = generator_loss(y_df_hat_g)
+        loss_gen_s, _ = generator_loss(y_ds_hat_g)
 
         loss_rel = generator_TPRLS_loss(y_df_hat_r, y_df_hat_g) + generator_TPRLS_loss(y_ds_hat_r, y_ds_hat_g)
         
@@ -177,10 +177,10 @@ class DiscriminatorLoss(torch.nn.Module):
     def forward(self, y, y_hat):
         # MPD
         y_df_hat_r, y_df_hat_g, _, _ = self.mpd(y, y_hat)
-        loss_disc_f, losses_disc_f_r, losses_disc_f_g = discriminator_loss(y_df_hat_r, y_df_hat_g)
+        loss_disc_f, _, _ = discriminator_loss(y_df_hat_r, y_df_hat_g)
         # MSD
         y_ds_hat_r, y_ds_hat_g, _, _ = self.msd(y, y_hat)
-        loss_disc_s, losses_disc_s_r, losses_disc_s_g = discriminator_loss(y_ds_hat_r, y_ds_hat_g)
+        loss_disc_s, _, _ = discriminator_loss(y_ds_hat_r, y_ds_hat_g)
         
         loss_rel = discriminator_TPRLS_loss(y_df_hat_r, y_df_hat_g) + discriminator_TPRLS_loss(y_ds_hat_r, y_ds_hat_g)
 
@@ -194,7 +194,7 @@ class WavLMLoss(torch.nn.Module):
 
     def __init__(self, model, wd, model_sr, slm_sr=16000):
         super(WavLMLoss, self).__init__()
-        self.wavlm = AutoModel.from_pretrained(model)
+        self.wavlm = AutoModel.from_pretrained(model) # Opportunity to use flash attention
         self.wd = wd
         self.resample = torchaudio.transforms.Resample(model_sr, slm_sr)
      

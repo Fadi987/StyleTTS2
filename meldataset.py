@@ -194,17 +194,7 @@ class Collater(object):
 
         return waves, texts, bert_texts, input_lengths, ref_texts, ref_lengths, mels, output_lengths, ref_mels
 
-
-def build_dataloader(path_list,
-                     root_path,
-                     validation=False,
-                     OOD_data="Data/OOD_texts.txt",
-                     min_length=50,
-                     batch_size=4,
-                     num_workers=1,
-                     device='cpu',
-                     collate_config={},
-                     dataset_config={}):
+def build_dataloader(path_list, root_path, OOD_data, min_length, batch_size, num_workers, device, validation=False, collate_config={}, dataset_config={}, **kwargs):
     
     dataset = FilePathDataset(path_list, root_path, OOD_data=OOD_data, min_length=min_length, validation=validation, **dataset_config)
     collate_fn = Collater(**collate_config)

@@ -4,7 +4,7 @@ import torch.nn.functional as F
 
 class SLMAdversarialLoss(torch.nn.Module):
 
-    def __init__(self, model, wl, sampler, min_len, max_len, batch_percentage=0.5, skip_update=10, sig=1.5):
+    def __init__(self, model, wl, sampler, min_len, max_len, batch_percentage, skip_update, sig, **kwargs):
         super(SLMAdversarialLoss, self).__init__()
         self.model = model
         self.wl = wl

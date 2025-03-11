@@ -104,7 +104,7 @@ slmadv_params:
   min_len: 400 # minimum length of samples
   max_len: 500 # maximum length of samples
   batch_percentage: 0.5 # to prevent out of memory, only use half of the original batch size
-  iter: 10 # update the discriminator every this iterations of generator update
+  skip_update: 10 # update the discriminator every this iterations of generator update
   thresh: 5 # gradient norm above which the gradient is scaled
   scale: 0.01 # gradient scaling factor for predictors from SLM discriminators
   sig: 1.5 # sigma for differentiable duration modeling
